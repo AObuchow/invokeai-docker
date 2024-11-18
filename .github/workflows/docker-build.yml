@@ -88,7 +88,7 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "4.2.7", python: "3.10", pytorch: "2.2.2", cuda: "12.1.1-base"}
+          - {latest: "false", invokeai: "5.4.1", python: "3.10", pytorch: "2.4.1", cuda: "12.1.1-base"}
           
     steps:
       -

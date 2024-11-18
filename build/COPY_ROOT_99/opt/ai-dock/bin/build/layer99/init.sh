@@ -80,25 +80,33 @@ function build_extra_start() {
 
     # Invoke has no exit/CI run mode so run it and wait until it's fuly initialised
     source "$INVOKEAI_VENV/bin/activate"
-    LD_PRELOAD=libtcmalloc.so invokeai-web 2>&1 | tee /tmp/invoke-ci.log &
+    LD_PRELOAD=libtcmalloc.so invokeai-web 2>&1 | tee /tmp/invoke-ci.log & 
+    INVOKE_PID=$!
+
     wait_max=30
     wait_current=0
     init_string="Uvicorn running on"
 
-    # Until loop to continuously check if the string is found or maximum wait time is reached
     while [ $wait_current -lt $wait_max ]; do
         if grep -qi "$init_string" /tmp/invoke-ci.log; then
             echo "InvokeAI initialization complete."
+            kill -9 $INVOKE_PID
             break
-        else
-            echo "Waiting for InvokeAI initialization to complete..."
-            sleep 1
-            wait_current=$((wait_current + 1))
         fi
+        echo "Waiting for InvokeAI initialization..."
+        sleep 1
+        wait_current=$((wait_current + 1))
     done
 
-    pkill invokeai-web
+    if [ $wait_current -eq $wait_max ]; then
+        echo "Timeout waiting for InvokeAI"
+        kill -9 $INVOKE_PID
+        exit 1
+    fi
+    ps aux
+    echo "Should be exiting about now"
     deactivate
+    echo "Still waiting?"
 }
 
 function build_extra_get_pip_packages() {
