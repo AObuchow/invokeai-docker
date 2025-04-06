@@ -82,6 +82,8 @@ jobs:
           # Avoids unknown/unknown architecture and extra metadata
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
     
   nvidia-base:
     runs-on: ubuntu-latest
@@ -154,6 +156,8 @@ jobs:
           push: true
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
 
   amd-base:
     runs-on: ubuntu-latest
@@ -225,3 +229,5 @@ jobs:
           push: true
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
