@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "4.2.7", python: "3.10", pytorch: "2.2.2"}
+          - {latest: "true", invokeai: "5.9.1", python: "3.10", pytorch: "2.2.2"}
     steps:
       -
         name: Free Space
@@ -77,7 +77,7 @@ jobs:
             PYTHON_VERSION=${{ matrix.build.python }}
             PYTORCH_VERSION=${{ matrix.build.pytorch }}
             INVOKEAI_VERSION=${{ env.INVOKEAI_VERSION }}
-            push: true
+          push: true
           # Avoids unknown/unknown architecture and extra metadata
           provenance: false
           tags: ${{ env.TAGS }}
@@ -88,8 +88,8 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "5.4.1", python: "3.10", pytorch: "2.4.1", cuda: "12.1.1-base"}
-          
+           - {latest: "true", invokeai: "5.9.1", python: "3.10", pytorch: "2.4.1", cuda: "12.1.1-base"}
+
     steps:
       -
         name: Free Space
