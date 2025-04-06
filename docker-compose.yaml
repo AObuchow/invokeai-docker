@@ -8,12 +8,12 @@ services:
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
         PYTORCH_VERSION: ${PYTORCH_VERSION:-2.4.1}
-        INVOKEAI_VERSION: ${INVOKEAI_VERSION:-5.4.1}
+        INVOKEAI_VERSION: ${INVOKEAI_VERSION:-5.9.1}
         IMAGE_BASE: ${IMAGE_BASE:-ghcr.io/ai-dock/python:3.10-v2-cuda-12.1.1-base-22.04}
       tags:
-        - "ghcr.io/ai-dock/invokeai:${IMAGE_TAG:-v2-cuda-12.1.1-base-22.04}"
+        - "ghcr.io/AObuchow/invokeai-docker:${IMAGE_TAG:-v2-cuda-12.1.1-base-22.04}"
         
-    image: ghcr.io/ai-dock/invokeai:${IMAGE_TAG:-v2-cuda-12.1.1-base-22.04}
+    image: ghcr.io/AObuchow/invokeai-docker:${IMAGE_TAG:-v2-cuda-12.1.1-base-22.04}
     
     deploy:
       resources:
