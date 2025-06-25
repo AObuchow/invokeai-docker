@@ -2,8 +2,9 @@ name: Docker Build
 
 on:
   workflow_dispatch:
-  #push:
-  #  branches: [ "main" ]
+  pull_request:
+    branches:
+      - main
     
 env:
   UBUNTU_VERSION: 22.04
@@ -16,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "4.2.7", python: "3.10", pytorch: "2.2.2"}
+          - {latest: "true", invokeai: "5.15.0", python: "3.10", pytorch: "2.7.0"}
     steps:
       -
         name: Free Space
@@ -77,10 +78,12 @@ jobs:
             PYTHON_VERSION=${{ matrix.build.python }}
             PYTORCH_VERSION=${{ matrix.build.pytorch }}
             INVOKEAI_VERSION=${{ env.INVOKEAI_VERSION }}
-            push: true
+          push: true
           # Avoids unknown/unknown architecture and extra metadata
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
     
   nvidia-base:
     runs-on: ubuntu-latest
@@ -88,8 +91,8 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "5.4.1", python: "3.10", pytorch: "2.4.1", cuda: "12.1.1-base"}
-          
+           - {latest: "true", invokeai: "5.15.0", python: "3.10", pytorch: "2.7.0", cuda: "12.1.1-base"}
+
     steps:
       -
         name: Free Space
@@ -153,6 +156,8 @@ jobs:
           push: true
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
 
   amd-base:
     runs-on: ubuntu-latest
@@ -160,7 +165,7 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - {latest: "false", invokeai: "4.2.7", python: "3.10", pytorch: "2.2.2", rocm: "5.7-core"}
+          - {latest: "false", invokeai: "4.15.0", python: "3.10", pytorch: "2.7.0", rocm: "5.7-core"}
     steps:
       -
         name: Free Space
@@ -224,3 +229,5 @@ jobs:
           push: true
           provenance: false
           tags: ${{ env.TAGS }}
+          build-env: |
+            MAX_ATTEMPTS=120
