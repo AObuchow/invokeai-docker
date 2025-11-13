@@ -7,8 +7,8 @@ services:
       context: ./build
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
-        PYTORCH_VERSION: ${PYTORCH_VERSION:-2.7.0}
-        INVOKEAI_VERSION: ${INVOKEAI_VERSION:-5.15.0}
+        PYTORCH_VERSION: ${PYTORCH_VERSION:-2.7.1}
+        INVOKEAI_VERSION: ${INVOKEAI_VERSION:-6.9.0}
         IMAGE_BASE: ${IMAGE_BASE:-ghcr.io/ai-dock/python:3.10-v2-cuda-12.1.1-base-22.04}
       tags:
         - "ghcr.io/AObuchow/invokeai-docker:${IMAGE_TAG:-v2-cuda-12.1.1-base-22.04}"
