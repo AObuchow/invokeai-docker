@@ -17,7 +17,7 @@ ENV OPT_SYNC=invokeai
 # Prepare environment
 ARG PYTHON_VERSION="3.10"
 ENV PYTHON_VERSION="${PYTHON_VERSION}"
-ARG PYTORCH_VERSION="2.2.2"
+ARG PYTORCH_VERSION="2.7.1"
 ENV PYTORCH_VERSION="${PYTORCH_VERSION}"
 COPY --chown=0:1111 ./COPY_ROOT_0/ /
 ARG IMAGE_BASE
@@ -33,6 +33,20 @@ RUN set -eo pipefail && /opt/ai-dock/bin/build/layer1/init.sh | tee -a /var/log/
 
 # Copy overrides and models into later layers for fast rebuilds
 COPY --chown=0:1111 ./COPY_ROOT_99/ /
+
+RUN df -h /var && echo "test"
+
+# Fix /dev/null if missing and install OpenGL dependency without bloat
+RUN [ ! -e /dev/null ] && mknod -m 666 /dev/null c 1 3 || true && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libgl1-mesa-glx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install OpenCV headless version to avoid GUI issues in container
+RUN $INVOKEAI_VENV_PIP install --no-cache-dir opencv-python-headless
+
 RUN set -eo pipefail && /opt/ai-dock/bin/build/layer99/init.sh | tee -a /var/log/build.log
 
 ENV PYTHON_DEFAULT_VENV=invokeai

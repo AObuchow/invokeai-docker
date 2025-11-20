@@ -7,6 +7,9 @@ build_common_main() {
 }
 
 build_common_install_invokeai() {
+    # Upgrade pip to avoid AssertionError bug in pip 22.0.x
+    $INVOKEAI_VENV_PIP install --upgrade pip
+
     $INVOKEAI_VENV_PIP install --no-cache-dir --use-pep517 \
         torch==${PYTORCH_VERSION} \
         InvokeAI==${INVOKEAI_VERSION}
